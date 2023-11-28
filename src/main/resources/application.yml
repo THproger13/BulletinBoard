@@ -2,8 +2,11 @@
 server:
   port: 8083
 
-# data base
+# Vue.js 프론트엔드 정적 콘텐츠를 제공하기 위한 설정
 spring:
+  mvc:
+    static-path-pattern: /**
+  # data base
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_bulletinBoard?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -16,11 +19,13 @@ spring:
 
   # spring data jpa
   jpa:
-#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     hibernate:
       ddl-auto: update
+  web:
+    resources:
+      static-locations: classpath:/static/
 
 # db query log
 logging:
