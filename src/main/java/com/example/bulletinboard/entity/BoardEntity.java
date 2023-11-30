@@ -42,7 +42,7 @@ public class BoardEntity {
     // Getters and setters are omitted for brevity
 
     // 연관관계
-    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CommentEntity> comments = new ArrayList<>();
 }
 

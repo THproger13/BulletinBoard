@@ -25,63 +25,54 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      signupData: {
-        memberName: '',
-        memberEmail: '',
-        password: ''
-      },
-      formErrors: {
-        memberName: null,
-        memberEmail: null,
-        password: null
-      }
-    };
-  },
-  methods: {
-    validateForm() {
-      // 클라이언트 측 유효성 검사를 수행하고, formErrors를 업데이트합니다.
-      // 백엔드에서 오는 유효성 검사 메시지를 활용하거나,
-      // 프론트엔드에서 별도의 유효성 검사 메시지를 사용할 수도 있습니다.
-    },
-    async submitForm() {
-      this.validateForm();
-      if (!this.formErrors.memberName && !this.formErrors.memberEmail && !this.formErrors.password) {
-        try {
-          // 회원가입 API 호출
-          await this.$axios.post('/api/members', this.signupData);
-          // 성공적으로 회원가입이 되면, 로그인 페이지로 리다이렉트하거나
-          // 회원가입 성공 메시지를 표시할 수 있습니다.
-        } catch (error) {
-          // 에러 처리, 예를 들면:
-          // if (error.response && error.response.data) {
-          //   this.formErrors = error.response.data.errors;
-          // }
-        }
-      }
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useAxios } from '@/hooks/useAxios';
+
+interface SignUpData {
+  memberName: string;
+  memberEmail: string;
+  password: string;
+}
+
+interface FormErrors {
+  memberName: string | null;
+  memberEmail: string | null;
+  password: string | null;
+}
+
+const signupData = ref<SignUpData>({
+  memberName: '',
+  memberEmail: '',
+  password: '',
+});
+
+const formErrors = ref<FormErrors>({
+  memberName: null,
+  memberEmail: null,
+  password: null,
+});
+
+const axios = useAxios();
+
+const validateForm = () => {
+  if (!signupData.value.memberName) {
+    formErrors.value.memberName = '이름을 입력해 주세요.';
+  } else {
+    formErrors.value.memberName = null;
+  }
+  // 이메일과 비밀번호에 대한 유효성 검사 로직도 추가할 수 있습니다.
+};
+
+const submitForm = async () => {
+  validateForm();
+  if (!formErrors.value.memberName && !formErrors.value.memberEmail && !formErrors.value.password) {
+    try {
+      const response = await axios.post('/api/members/signup', signupData.value);
+      // 성공 시 로직, 예를 들어 로그인 페이지로 이동
+    } catch (error) {
+      // 에러 처리 로직
     }
   }
 };
 </script>
-
-<style scoped>
-/* 스타일은 여기에 추가합니다. */
-.form-group {
-  margin-bottom: 1rem;
-}
-.form-group label {
-  display: block;
-}
-.form-group input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.25rem;
-}
-.form-group span {
-  color: red;
-  font-size: 0.875rem;
-}
-</style>

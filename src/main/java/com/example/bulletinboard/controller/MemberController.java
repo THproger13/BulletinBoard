@@ -1,5 +1,6 @@
 package com.example.bulletinboard.controller;
 
+import com.example.bulletinboard.dto.MemberDTO;
 import com.example.bulletinboard.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -18,9 +19,8 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
-        // 회원가입 로직을 수행하고 결과를 반환
-        memberService.registerUser(signUpRequest);
+    public ResponseEntity<?> registerUser(@RequestBody MemberDTO memberDTO) {
+        memberService.registerUser(memberDTO);
         return ResponseEntity.ok().build();
     }
 }
